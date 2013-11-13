@@ -1,0 +1,61 @@
+// common api for emacs lisp
+
+// binary operator
+// any
+@Common @Operator boolean ==(any x, any y) as "(equal $1 $2)"
+@Common @Operator boolean !=(any x, any y) as "(not (equal $1 $2))"
+@Common @Operator boolean !(boolean x) as "(not $1)"
+
+// boolean
+@Common @Operator boolean ==(boolean x, boolean y) as "(eq $1 $2)"
+@Common @Operator boolean !=(boolean x, boolean y) as "(not (eq $1 $2))"
+@Common String convert(boolean x) as "(format \"%s\" $1)"
+
+// IntAPI
+// unary operator
+@Common @Operator int +(int x) as "(+ $1)"
+@Common @Operator int -(int x) as "(- $1)"
+@Common @Operator int ~(int x) as "(lognot $1)"
+
+@Common @Operator int +(int x, int y)        as "(+ $1 $2)"
+@Common @Operator int -(int x, int y)        as "(- $1 $2)"
+@Common @Operator int *(int x, int y)        as "(* $1 $2)"
+@Common @Operator int /(int x, int y)        as "(/ $1 $2)"
+@Common @Operator int %(int x, int y)        as "(mod $1 $2)"
+@Common @Operator int <<(int x, int y)       as "(lsh $1 $2)"
+@Common @Operator int >>(int x, int y)       as "(lsh $1 (- $2))"
+@Common @Operator int ^(int x, int y)        as "(logxor $1 $2)"
+@Common @Operator int |(int x, int y)        as "(logior $1 $2)"
+@Common @Operator int &(int x, int y)        as "(logand $1 $2)"
+@Common @Operator boolean <(int x, int y)    as "(< $1 $2)"
+@Common @Operator boolean <=(int x, int y)   as "(<= $1 $2)"
+@Common @Operator boolean >(int x, int y)    as "(> $1 $2)"
+@Common @Operator boolean >=(int x, int y)   as "(>= $1 $2)"
+@Common @Operator boolean ==(int x, int y)   as "(== $1 $2)"
+@Common @Operator boolean !=(int x, int y)   as "(not (== $1 $2))"
+
+// String
+@Common @Operator String +(String x, String y)    as "(concat $1 $2)"
+@Common @Operator boolean ==(String x, String y)  as "(string= $1 $2)"
+@Common @Operator boolean !=(String x, String y)  as "(not (string= $1 $2))"
+@Common @Operator boolean <(String x, String y)   as "(string< $1 $2)"
+@Common @Operator boolean <=(String x, String y)  as "(or (string= $1 $2) (string< $1 $2))"
+@Common @Operator boolean >(String x, String y)   as "(and (not (string= a b)) (not (string< a b)))"
+@Common @Operator boolean >=(String x, String y)  as "(not (string< a b))"
+
+@Common boolean startsWith(String x, String y) as "(string-prefix-p $2 $1 nil)"
+@Common boolean endsWith(String x, String y) as "(let ((spos (- (length $1) (length $2)))) (and (>= spos 0) (eq t (compare-strings $2 nil nil $1 spos nil nil))))"
+
+@Common int indexOf(String x, String sub) as "(let ((case-fold-search nil)) (string-match-p (regexp-quote $2) $1))"
+@Common int lastIndexOf(String x, String sub) as "(let ((case-fold-search nil) (s 0) (r -1)) (while (string-match (regexp-quote $2) $1 s) (setq s (match-end 0) r (match-beginning 0))) r)"
+
+@Common String substring(String x, int s) as "(substr $1 $2 $3)"
+@Common String substring(String x, int s, int e) as "(substr $1 $2 $3)"
+@Common String toLower(String x) as "(downcase $1)"
+@Common String toUpper(String x) as "(upcase $1)"
+@Common String replace(String x, String old, String new) as "(replace-regexp-in-string (regexp-quote $2) $3 $1)"
+
+// function
+@Common void print(String x) as "(princ $1)"
+@Common void println(String x) as "(princ (concat $1 \"\n\"))"
+@Common void assert(boolean x) as "(assert $1)"
